@@ -27,7 +27,7 @@ class Pesanan extends Model
         // return $this->belongsTo('App\StatusPembayaran', 'id');
         return $this->belongsTo(StatusPembayaran::class);
     }
-    public function users(){
+    public function pekerja(){
         return $this->belongsTo(User::class);
         // return $this->belongsTo('App\Customer', 'id');
     }

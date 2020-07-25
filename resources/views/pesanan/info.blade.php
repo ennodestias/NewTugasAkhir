@@ -45,7 +45,7 @@
                                 <h6>Keterangan Tambahan</h6>
                             </div>
                             <div class="col-6">
-                                <h6>:  </h6>
+                                <h6>: {{ $pekerja_id -> name }}</h6>
                                 <h6>: {{ $data -> tanggal_diterima }}</h6>
                                 <h6>: {{ $data -> tanggal_selesai }}</h6>
                                 <h6>: {{ $data -> keterangan }}</h6>

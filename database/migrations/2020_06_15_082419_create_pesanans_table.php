@@ -24,6 +24,8 @@ class CreatePesanansTable extends Migration
             $table->integer('status_pesanan_id')->unsigned();
             $table->integer('status_pembayaran_id')->unsigned();
             $table->string('keterangan');
+            $table->integer('pekerja_id')->unsigned();
+
             $table->timestamps();
         });
     }

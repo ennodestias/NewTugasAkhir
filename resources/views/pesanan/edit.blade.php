@@ -65,7 +65,7 @@
                                 <select class="form-control select2" id="status_pesanan_id" name="status_pesanan_id">
                                 <option value=""></option>
                                 @foreach($status_pesanans as $sp)
-                                <option value="{{ $data->status_pesanan_id }}">{{ $sp->nama }}</option>
+                                <option value="{{ $sp->id }}">{{ $sp->nama }}</option>
                                 @endforeach
                             </select>
                         </div>

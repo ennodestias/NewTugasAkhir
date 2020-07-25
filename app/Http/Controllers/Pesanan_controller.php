@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Services\DataTable;
 use App\Pesanan;
 use App\Customer;
 use App\Paket;
 use App\StatusPesanan;
 use App\StatusPembayaran;
+use App\User;
 use DB;
 use PDF;
 
@@ -70,9 +72,10 @@ class Pesanan_controller extends Controller
         $paket = Pesanan::find($id)->paket;
         $statusPesanan = Pesanan::find($id)->statuspesanan;
         $statusPembayaran = Pesanan::find($id)->statuspembayaran;
+        $pekerja_id = Pesanan::find($id)->pekerja;
         // $user = User::get();
   
-        return view('pesanan.info', compact('title','data','customer','paket','statusPesanan','statusPembayaran'));
+        return view('pesanan.info', compact('title','data','customer','pekerja_id','paket','statusPesanan','statusPembayaran'));
    }
 
     public function pdf(){
@@ -146,6 +149,7 @@ class Pesanan_controller extends Controller
         'status_pembayaran_id' => $request->status_pembayaran_id,
         'status_pesanan_id' => $request->status_pesanan_id,
         'keterangan'=>$request->keterangan,
+        'pekerja_id'=>Auth::user()->id,
         ]);
 
         $data->save();
@@ -176,15 +180,16 @@ class Pesanan_controller extends Controller
         $data = Pesanan::find($id);
         $customer = Pesanan::find($id)->customer;
         $paket = Pesanan::find($id)->paket;
-        $statusPesanan = Pesanan::find($id)->statuspesanan;
-        $statusPembayaran = Pesanan::find($id)->statuspembayaran;
-
+        $status_pesanan = Pesanan::find($id)->status_pesanans;
+        // $cekPesananPembayaran = Pesanan::with(['cekpesanan','cekpembayaran'])->get();
+        // echo "<script>console.log('test ".$cekPesananPembayaran."')</script>";
+        echo "<script>console.log('test ".$id."')</script>";
         $customers = Customer::orderBy('nama','asc')->get();
         $pakets = Paket::orderBy('nama','asc')->get();
         $status_pesanans = StatusPesanan::orderBy('nama','asc')->get();
         $status_pembayaran = StatusPembayaran::get();
     
-        return view('pesanan.edit', compact('title','data','customer','paket','statusPesanan','statusPembayaran','customers','pakets','status_pesanans','status_pembayaran'));
+        return view('pesanan.edit', compact('title','data','customer','paket','status_pesanan','customers','pakets','status_pesanans','status_pembayaran'));
     }
 
     /**
