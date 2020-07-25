@@ -1,0 +1,14 @@
+[
+    {
+        "animal": "cat",
+        "legs": "4"
+    },
+    {   
+        "animal": "cow",
+        "legs": "4"
+    },
+    {
+        "animal": "chicken",
+        "legs": "2"
+    }
+]
