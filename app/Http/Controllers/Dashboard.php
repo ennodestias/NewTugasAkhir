@@ -15,7 +15,7 @@ class Dashboard extends Controller
     public function index(Request $request){
     // $title = 'Dashboard';
     $title = 'Dashboard';
-    $date = Carbon::now()->format('Y-m-d');
+    $date = now()->format('Y-m-d');
     $count = Customer::count();
     $countPesanan = Pesanan::whereDate('created_at', Carbon::today())->count();
     $countPendapatan = Pesanan::select('total')->whereDate('created_at', Carbon::today())->sum('total');
@@ -25,13 +25,13 @@ class Dashboard extends Controller
     // var_dump($date);
     // die;
     //$countPesanan = Pesanan::where('created_at','date')->count();
-    // $date = Carbon\Carbon::now();
+    // $date = now();
     // $date->toDateTimeString();
     // 'SELECT id_pelanggan, id_produk, SUM(jml_byr) AS total 
 	// 	FROM `sales` 
     // 	GROUP BY id_pelanggan, id_produk';
    
-    //$end = Carbon\Carbon::now()->format('Y-m-d') . ' 23:59:00';
+    //$end = now()->format('Y-m-d') . ' 23:59:00';
     // $countPendapatan = Pesanan::sum('total');ini
     // ->where('created_at'.$end);
     // $countPesanan = Pesanan::now()->count();
