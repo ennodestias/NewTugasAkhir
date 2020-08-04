@@ -23,12 +23,12 @@
     </div>
                 <div class="card">
                     <div class="card-body">
-                        <table id="data_pesanan" class="table table-bordered table-hover responsive">
+                        <table id="data_riwayat" class="table table-bordered table-hover responsive">
                             <thead>
                                 <tr>
                                     <th>Nama Pelanggan</th>
                                     <th>Paket</th>
-                                    <th>Berat</th>
+                                    <th>Berat / Pcs</th>
                                     <th>Total</th>
                                     <th>Tanggal Pesanan</th>
                                     <th>Status Pesanan</th>
@@ -66,11 +66,11 @@
 $(document).ready(function(){   
     fill_datatable();
         function fill_datatable(){
-            var dataTable = $('#data_pesanan').DataTable({
+            var dataTable = $('#data_riwayat').DataTable({
                 processing: true,
                 serverSide: true,
                 ajax:{
-                    url: "/pesanan",
+                    url: "/riwayat",
                 },
                 columns: [
                     {
@@ -87,6 +87,7 @@ $(document).ready(function(){
                     },
                     {
                         data: 'total',
+                        render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
                         name: 'total'
                     },
                     {

@@ -48,7 +48,7 @@ td {
         <img src="lte/dist/img/logo.png" height="70px;" width="70px;" style="padding-right:20px; clear:both;float:left">
         <div style="height:70px;padding: 20px;">
           <b>LAPORAN TRANSAKSI LAUNDRY</b><br>
-          <b>GANDHY LAUNDRY</b><br>
+          <b>RUMAH LAUNDRY GANDHI</b><br>
         </div>
     </header>
     <div class="content">
@@ -68,15 +68,17 @@ td {
                     <th>Total</th>
                 </tr>
             </thead>
-            <tbody> 
+            <tbody>
+            @foreach($data as $pesanan)
                   <tr> 
                     <th style="text-align: center;">NO</th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
-                    <th></th>
+                    <th>{{$pesanan->customer->nama}}</th>
+                    <th>{{$pesanan->paket->nama}}</th>
+                    <th>{{$pesanan->berat}}</th>
+                    <th>{{$}}</th>
                   </tr>
             </tbody>
+            @endforeach
         </table>
     </div>
 </body>

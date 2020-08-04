@@ -34,7 +34,7 @@
             <!-- small box -->
             <div class="small-box bg-success">
               <div class="inner">
-                <h3>Rp. {{ $countPendapatan }}</h3>
+                <h3>{{"Rp " . number_format($countPendapatan, 0, ",", ".")  }}</h3>
                 <p>Total Pendapatan Hari Ini</p>
               </div>
               <!-- <div class="icon">

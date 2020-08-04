@@ -33,25 +33,25 @@
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
-                                <label>Paket *</label>
-                                <select name="paket_id" class="form-control select2" style="width: 100%;">
+                                <label>Paket</label>
+                                <select id="paket" name="paket_id" class="form-control select2" style="width: 100%;" onchange="paketSelected(this)">
                                 <option value=""> --Pilih Paket-- </option>
                                     @foreach($paket as $pakets)
-                                    <option value="{{ $pakets->id }}">{{ $pakets->nama }}</option>
+                                    <option id="{{$pakets->id}}" value="{{ $pakets->durasi }}">{{ $pakets->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
-                                <label>Berat</label>
+                                <label>Berat / Pcs</label>
                                 <input type="text" name="berat" class="form-control" id="berat" placeholder="Contoh: 1">
                             </div>
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
                                 <label>Tanggal Diterima</label>
-                                <input type="date" name="tanggal_diterima" class="form-control" id="tanggal_diterima">
+                                <input type="date" name="tanggal_diterima" class="form-control" id="tanggal_diterima" value="{{$today_date->toDateString()}}">
                             </div>
                         </div>
                         <div class="row-sm-6">
@@ -101,18 +101,46 @@
 
 @section('scripts')
 <script >
+function paketSelected(paketElem){
+    //ambil durasi paket dari atribut label
+    var days = parseInt(paketElem.options[paketElem.selectedIndex].value);
+    //ambil tanggal hari ini
+    var currentDate = document.getElementById('tanggal_diterima').value;
+    //ubah format tanggal
+    var newDate = new Date(currentDate);
+    //tanggal hari ini + durasi paket
+    newDate.setDate(newDate.getUTCDate()+days);
+    //ubah format tanggal biar YYYY-MM-DD
+    var futureDate = newDate.getFullYear()+'-'+('0'+(newDate.getMonth()+1)).slice(-2)+'-'+('0'+(newDate.getDate())).slice(-2);
+    //ubah VALUE INPUT tanggal_selesai
+    document.getElementById('tanggal_selesai').value=futureDate;
+    console.log(currentDate);
+    console.log(futureDate);
+}
+// $("#paket").change(function(){
+//       alert($('#paket').children("option:selected").get(0).id);
+//     });
 $(document).ready(function(){   
     $('#tambah_pesanan').on('submit', function(e){
         e.preventDefault();
 
         var customer_id = $('#customer_id').val();
-        var paket = $('#paket').val();
+        var paket = $('#paket').children("option:selected").get(0).id;
         var berat = $('#berat').val();
         var tanggal_diterima = $('#tanggal_diterima').val();
         var tanggal_selesai = $('#tanggal_selesai').val();
         var status_pesanan_id = $('#status_pesanan_id').val();
         var status_pembayaran_id = $('#status_pembayaran_id').val();
         var keterangan = $('#keterangan').val();
+        var serializeForm = $('#tambah_pesanan').serializeArray();
+        //mengatasi paket_id biar ambil atribut id bukan atribut value
+        for (index = 0; index < serializeForm.length; ++index) {
+            if (serializeForm[index].name == "paket_id") {
+                serializeForm[index].value = paket ;
+                break;
+            }
+        }
+        serializeForm = jQuery.param(serializeForm);
 
         $.ajax({
             type: "POST",
@@ -120,7 +148,7 @@ $(document).ready(function(){
             url: "/api/pesanan/add/",
             cache:false,
             dataType: "json",
-            data: $('#tambah_pesanan').serialize(),
+            data: serializeForm,
             success: function(data){
                 window.location = "/pesanan";
                 toastr.options.closeButton = true;

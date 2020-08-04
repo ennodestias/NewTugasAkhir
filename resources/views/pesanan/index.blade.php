@@ -28,7 +28,7 @@
                                 <tr>
                                     <th>Nama Pelanggan</th>
                                     <th>Paket</th>
-                                    <th>Berat</th>
+                                    <th>Berat / Pcs</th>
                                     <th>Total</th>
                                     <th>Tanggal Pesanan</th>
                                     <th>Status Pesanan</th>
@@ -179,6 +179,7 @@ $(document).ready(function(){
                     },
                     {
                         data: 'total',
+                        render: $.fn.dataTable.render.number( '.', ',', 0, 'Rp ' ),
                         name: 'total'
                     },{
                         data: 'created_at',

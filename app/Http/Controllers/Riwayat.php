@@ -4,6 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Pesanan;
+use App\Customer;
+use App\Paket;
+use App\StatusPesanan;
+use App\StatusPembayaran;
+use App\User;
 
 class Riwayat extends Controller
 {
@@ -15,7 +20,8 @@ class Riwayat extends Controller
     public function index()
     {
             $title = 'Riwayat Pesanan';
-            $data = Pesanan::get();
+            $selesaiStatus = StatusPesanan::where('nama','=','Selesai')->firstOrFail();
+            $data = Pesanan::where('status_pesanan_id','=',$selesaiStatus->id)->get();
             
             if(request()->ajax()){
     

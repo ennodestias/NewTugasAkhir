@@ -16,15 +16,15 @@ Route::get('/', function () {
     ('home');
 });
 
-Route::group(['middleware' => ['web', 'auth', 'role:admin']],function(){
-  Route::group(['users'=>'Admin'],function(){
-   Route::resource('site', 'SiteController');
-  });
+// Route::group(['middleware' => ['web', 'auth', 'role:admin']],function(){
+//   Route::group(['users'=>'Admin'],function(){
+//    Route::resource('site', 'SiteController');
+//   });
   
-  Route::group(['users'=>'Karyawan'],function(){
-   Route::resource('user', 'UserController');
-  });
- });
+//   Route::group(['users'=>'Karyawan'],function(){
+//    Route::resource('user', 'UserController');
+//   });
+//  });
 
 Route::group(['middleware'=>'auth'],function(){    
     Route::get("home",'Dashboard@index');
@@ -45,10 +45,11 @@ Route::group(['middleware'=>'auth'],function(){
     Route::get("customer", 'CustomerController@index');
     Route::get("customer/add", 'CustomerController@add');
     Route::get("customer/edit/{id}", ['as' => 'customer.edit', 'uses' => 'CustomerController@edit']);
-
-    Route::get("karyawan", 'Karyawan_controller@index');
-    Route::get("karyawan/add", 'Karyawan_controller@add');
-    Route::get("karyawan/edit/{id}", ['as' => 'karyawan.edit', 'uses' => 'Karyawan_controller@edit']);
+    Route::group(['middleware'=>['role:admin']],function(){
+      Route::get("karyawan", 'Karyawan_controller@index');
+      Route::get("karyawan/add", 'Karyawan_controller@add');
+      Route::get("karyawan/edit/{id}", ['as' => 'karyawan.edit', 'uses' => 'Karyawan_controller@edit']);
+    });
 
     Route::get("pesanan", 'Pesanan_controller@index');
     Route::get("pesanan/add", 'Pesanan_controller@add');

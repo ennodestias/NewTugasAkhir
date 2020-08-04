@@ -60,7 +60,7 @@
                                 <table class="table table-hover responsive">
                                     <thead>
                                         <tr>
-                                            <th>Berat</th>
+                                            <th>Berat / Pcs</th>
                                             <th>Paket</th>
                                             <th>Harga Paket</th>
                                             <th>Total</th>
@@ -70,8 +70,8 @@
                                     <tr>
                                         <th>{{ $data->berat }}</th>
                                         <th>{{ $paket->nama }}</th>
-                                        <th>{{ $paket->harga }}</th>
-                                        <th>{{ $data->total}}</th>
+                                        <th>{{"Rp " . number_format($paket->harga, 0, ",", ".")  }}</th>
+                                        <th>{{"Rp " . number_format($data->total, 0, ",", ".")  }}</th>
                                     </tr>
                                     </tbody>
                                 </table>

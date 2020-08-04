@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
+use Hash;
 
 class Karyawan_controller extends Controller
 {
@@ -74,7 +75,7 @@ class Karyawan_controller extends Controller
             'alamat' => $request->alamat,
             'jeniskelamin' => $request->jeniskelamin,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
             'role' => $request->role,
         ]);
 
@@ -118,18 +119,18 @@ class Karyawan_controller extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'nama' => 'required',
-            'nohp' => 'required',
+            'name' => 'required',
+            'no_telp' => 'required',
             'email' => 'required',
-            'password' => 'required',
+            'password' => 'required|confirmed',
         ]);
 
         $karyawan = User::findOrFail($id);
         $karyawan -> update([
-            'nama' => $request->nama,
-            'nohp' => $request->nohp,
+            'name' => $request->name,
+            'no_telp' => $request->no_telp,
             'email' => $request->email,
-            'password' => $request->password,
+            'password' => Hash::make($request->password),
         ]);
 
         $karyawan->save();

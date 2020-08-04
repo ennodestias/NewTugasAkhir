@@ -55,7 +55,7 @@ class RegisterController extends Controller
             'alamat' => ['required', 'string', 'max:50'],
             'jeniskelamin' => ['required', 'in:wanita,pria'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
             'role' => ['required', 'in:admin,karyawan'],
         ]);
     }
@@ -74,7 +74,7 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'],
             'jeniskelamin' => $data['jeniskelamin'],
             'email' => $data['email'],
-            'password' => $data['password'],
+            'password' => Hash::make($data['password']),
             'role' => $data['role'],
         ]);
     }

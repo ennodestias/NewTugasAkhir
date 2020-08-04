@@ -13,6 +13,7 @@ use App\StatusPembayaran;
 use App\User;
 use DB;
 use PDF;
+use Carbon\Carbon;
 
 class Pesanan_controller extends Controller
 {
@@ -23,7 +24,8 @@ class Pesanan_controller extends Controller
      */
     public function index(Request $request){
         $title = 'Data Pesanan';
-        $data = Pesanan::get();
+        $selesaiStatus = StatusPesanan::where('nama','=','Selesai')->firstOrFail();
+        $data = Pesanan::where('status_pesanan_id','!=',$selesaiStatus->id)->get();
 
         if(request()->ajax()){
 
@@ -79,12 +81,10 @@ class Pesanan_controller extends Controller
    }
 
     public function pdf(){
-        $data = Pesanan::get();
-        $customer = Customer::orderBy('nama')->get();
-        $paket = Paket::orderBy('nama')->get();
-        $pdf = PDF::loadView('pesanan.pdf', compact('data','customer','paket'));
+        $data = Pesanan::with('customer','paket')->get();
+        $pdf = PDF::loadView('pesanan.pdf', compact('data'));
         
-        return $pdf->download('pesanan.pdf');
+        return $pdf->download('riwayat_pesanan.pdf');
     }
 
     public function invoice($id){
@@ -93,11 +93,12 @@ class Pesanan_controller extends Controller
         $paket = Pesanan::find($id)->paket;
         $statusPesanan = Pesanan::find($id)->statuspesanan;
         $statusPembayaran = Pesanan::find($id)->statuspembayaran;
+        $pekerja = Pesanan::find($id)->pekerja;
         // $user = User::get();
   
-        $pdf = PDF::loadView('pesanan.invoice', compact('data','customer','paket','statusPesanan','statusPembayaran'));
+        $pdf = PDF::loadView('pesanan.invoice', compact('data','customer','paket','statusPesanan','statusPembayaran','pekerja'));
         
-        return $pdf->download('invoice.pdf');
+        return $pdf->download('invoice_'.$id.'.pdf');
     }
     /**
      * Show the form for creating a new resource.
@@ -111,9 +112,11 @@ class Pesanan_controller extends Controller
         $paket = Paket::orderBy('nama','asc')->get();
         $status_pesanan = StatusPesanan::orderBy('nama','asc')->get();
         $status_pembayaran = StatusPembayaran::orderBy('nama','asc')->get();
+        $today_date = Carbon::now('Asia/Jakarta');
+        echo "<script>console.log('".$today_date."')</script>";
 
 
-        return view('pesanan.add',compact('title','customer','paket','status_pesanan','status_pembayaran'));
+        return view('pesanan.add',compact('title','customer','paket','status_pesanan','status_pembayaran', 'today_date'));
     }
 
     public function create()
@@ -183,7 +186,7 @@ class Pesanan_controller extends Controller
         $status_pesanan = Pesanan::find($id)->status_pesanans;
         // $cekPesananPembayaran = Pesanan::with(['cekpesanan','cekpembayaran'])->get();
         // echo "<script>console.log('test ".$cekPesananPembayaran."')</script>";
-        echo "<script>console.log('test ".$id."')</script>";
+        echo "<script>console.log('test ".$customer."')</script>";
         $customers = Customer::orderBy('nama','asc')->get();
         $pakets = Paket::orderBy('nama','asc')->get();
         $status_pesanans = StatusPesanan::orderBy('nama','asc')->get();
@@ -204,21 +207,25 @@ class Pesanan_controller extends Controller
         $this->validate($request,[
             'berat'=>'required',
             // 'tanggal_diterima'=>'required',
-            // 'tanggal_selesai'=>'required',
+            'tanggal_selesai'=>'required',
             'keterangan'=>'required',
+            'status_pesanan_id'=>'required',
+            'status_pembayaran_id'=>'required',
         ]);
 
-        $paket = Paket::find($request->paket_id);
-        $total = $paket->harga * $request->berat;
+        // $paket = Paket::find($request->paket_id);
+        // $total = $paket->harga * $request->berat;
 
         $data = Pesanan::findOrFail($id);
         $data -> update([
-        'customer_id' => $request->customer_id,
-        'paket_id' => $request->paket_id,
+        // 'customer_id' => $request->customer_id,
+        // 'paket_id' => $request->paket_id,
         'berat' => $request->berat,
-        'tanggal_diterima'=>$request->tanggal_diterima,
+        // 'tanggal_diterima'=>$request->tanggal_diterima,
+        'status_pesanan_id'=>$request->status_pesanan_id,
+        'status_pembayaran_id'=>$request->status_pembayaran_id,
         'tanggal_selesai'=>$request->tanggal_selesai,
-        'total' => $request->total,
+        // 'total' => $total,
         'keterangan'=>$request->keterangan,
         ]);
 

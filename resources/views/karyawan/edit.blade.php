@@ -22,19 +22,26 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label for="nama">Nama</label>
-                    <input type="nama" class="form-control" name="nama" id="nama" placeholder="Masukkan nama karyawan" value = "{{ $data -> nama }}" required>
+                    <input type="text" class="form-control" name="name" id="name" placeholder="Masukkan nama karyawan" value = "{{ $data -> name }}" required>
                   </div>
                   <div class="form-group">
                     <label for="nohp">No HP</label>
-                    <input type="nohp" class="form-control" name="nohp" id="nohp" placeholder="Masukkan no hp karyawan" value = "{{ $data -> nohp }}" required >
+                    <input type="number" class="form-control" name="no_telp" id="no_telp" placeholder="Masukkan no hp karyawan" value = "{{ $data -> no_telp }}" required >
                   </div>
                   <div class="form-group">
                     <label for="email">Email</label>
                     <input type="email" class="form-control" name="email" id="email" placeholder="Masukkan email" value = "{{ $data -> email }}" required>
                   </div>
                   <div class="form-group">
-                    <label for="password">Password</label>
-                    <input type="nama" class="form-control" name="password" id="password" placeholder="Masukkan password" value = "{{ $data -> password }}" required >
+                    <label for="password">New Password</label>
+                    <!-- <input type="password" class="form-control" name="password" id="password" placeholder="Masukkan password" required > -->
+                    <input id="password" type="password" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+                    {!! $errors->first('password', '<p class="text-danger errorBag" id="showerror">:message</p>') !!}
+                  </div>
+                  <div class="form-group">
+                    <label for="password">Confirm New Password</label>
+                    <input type="password" id="password_confirmation" name="password_confirmation" class="form-control" required>
+                    {!! $errors->first('password-confirm', '<p class="text-danger errorBag" id="showerror1">:message</p>') !!}
                   </div>
                 </div>
                 
@@ -66,14 +73,15 @@
 
 
 <script>
+console.log($('#editkaryawan').serialize());
 $(document).ready(function(){   
     $('#editkaryawan').on('submit', function(e){
         e.preventDefault();
 
         //var id = $(this).data('data-id');
         var id = $('#id').val();
-        var nama = $('#nama').val();
-        var nohp = $('#nohp').val();
+        var name = $('#name').val();
+        var no_telp = $('#no_telp').val();
         var email = $('#email').val();
         var password = $('#password').val();
 

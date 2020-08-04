@@ -40,4 +40,9 @@ class User extends Authenticatable
     public function pesanan(){
         return $this->hasMany('App\Pesanan', 'id');
     }
+
+    public function whatRole($id)
+    {
+        return User::where('id', $id)->get();
+    }
 }

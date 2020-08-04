@@ -23,49 +23,48 @@
                         <div class="row-sm-6">
                             <div class="form-group">
                                 <label>Nama Pelanggan</label>
-                                <select name="customer_id" id="customer_id" class="form-control select2" style="width: 100%;">
-                                    <option value="">{{ $customer->nama }}</option>
+                                <select name="customer_id" id="customer_id" class="form-control select2" style="width: 100%;" disabled>
+                                    <!-- <option value="">{{ $customer->nama }}</option> -->
                                 @foreach($customers as $cus)
-                                    <option value="{{ $cus->id }}">{{ $cus->nama }}</option>
+                                    <option value="{{ $cus->id }}" <?php if($customer->nama == $cus->nama) echo'selected="selected"';?>>{{ $cus->nama }}</option>
                                 @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
-                                <label>Paket *</label>
-                                <select name="paket_id" id="paket_id" class="form-control select2" style="width: 100%;">
-                                    <option value="">{{ $paket->nama }}</option>
+                                <label>Paket</label>
+                                <select name="paket_id" id="paket_id" class="form-control select2" style="width: 100%;" disabled>
+                                    <!-- <option value="">{{ $paket->nama }}</option> -->
                                     @foreach($pakets as $pkt)
-                                    <option value="{{ $pkt->id }}">{{ $pkt->nama }}</option>
+                                    <option value="{{ $pkt->id }}" <?php if($paket->nama == $pkt->nama) echo'selected="selected"';?>>{{ $pkt->nama }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
-                                <label>Berat</label>
+                                <label>Berat / Pcs</label>
                                 <input type="text" name="berat" class="form-control" id="berat" placeholder="Contoh: 1" value="{{ $data->berat }}">
                             </div>
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
                                 <label>Tanggal Diterima</label>
-                                <input type="date" name="keterangan" class="form-control" id="tgl_diterima" value="{{ $data->tanggal_diterima }}">
+                                <input type="date" name="tanggal_diterima" class="form-control" id="tgl_diterima" value="{{ $data->tanggal_diterima }}" disabled>
                             </div>
                         </div>
                         <div class="row-sm-6">
                             <div class="form-group">
                                 <label>Tanggal Selesai</label>
-                                <input type="date" name="keterangan" class="form-control" id="tgl_selesai" value="{{ $data->tanggal_selesai }}">
+                                <input type="date" name="tanggal_selesai" class="form-control" id="tgl_selesai" value="{{ $data->tanggal_selesai }}">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="exampleInputEmail1">Status Pesanan</label>
                                 <select class="form-control select2" id="status_pesanan_id" name="status_pesanan_id">
-                                <option value=""></option>
                                 @foreach($status_pesanans as $sp)
-                                <option value="{{ $sp->id }}">{{ $sp->nama }}</option>
+                                <option value="{{ $sp->id }}" <?php if($data->status_pesanan_id == $sp->nama){echo 'selected="selected"';}?>>{{ $sp->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -73,9 +72,8 @@
                         <div class="form-group">
                             <label for="exampleInputEmail1">Status Pembayaran</label>
                             <select class="form-control select2" id="status_pembayaran_id" name="status_pembayaran_id">
-                                <option value=""></option>
                                 @foreach($status_pembayaran as $sb)
-                                <option value="{{ $sb->id }}">{{ $sb->nama }}</option>
+                                <option value="{{ $sb->id }}" <?php if($data->status_pembayaran_id == $sb->nama){echo 'selected="selected"';}?>>{{ $sb->nama }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -104,11 +102,14 @@
 
 @section('scripts')
 <script >
+$("#status_pesanan_id").change(function(){
+      alert($('#edit_pesanan').serialize());
+    });
 $(document).ready(function(){   
     $('#edit_pesanan').on('submit', function(e){
         e.preventDefault();
-
-        var id = $('#id').val();
+        var urlPath = window.location.pathname;
+        var id = urlPath.slice(urlPath.lastIndexOf('/')+1);
         var customer_id = $('#customer_id').val();
         var paket = $('#paket').val();
         var berat = $('#berat').val();

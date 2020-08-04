@@ -86,6 +86,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="{{ url('/customer') }}" class="d-block" style="color:#FFFFFF;">Data Pelanggan</a>
         </div>
       </div>
+      @if(\Auth::user()->role == 'admin')
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-item has-treeview">
           <a href="#" class="nav-link" style="color:#FFFFFF;">
@@ -117,7 +118,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             </div>
           </div>
       </ul>
-
+      
       <div class="user-panel  d-flex">
         <div class="image">
           <img src="{{asset('lte/dist/img/karyawan.png')}}" alt="poscu" class="brand-image img-circle">
@@ -126,6 +127,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
           <a href="{{ url('/karyawan') }}" class="d-block" style="color:#FFFFFF;">Kelola Karyawan</a>
         </div>
       </div>
+      @endif
       <!-- <div class="user-panel mt-2 d-flex">
         <div class="image">
           <img src="{{asset('lte/dist/img/kelola.png')}}" alt="poscu" class="brand-image img-circle">
