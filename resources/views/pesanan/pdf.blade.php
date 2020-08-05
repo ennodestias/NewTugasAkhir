@@ -61,7 +61,7 @@ td {
         <table>
             <thead>
                 <tr>
-                    <th style="text-align: center;">NO</th>
+                    <th style="text-align: center;">ID Pesanan</th>
                     <th>Nama Pelanggan</th>
                     <th>Paket</th>
                     <th>Berat</th>
@@ -71,11 +71,11 @@ td {
             <tbody>
             @foreach($data as $pesanan)
                   <tr> 
-                    <th style="text-align: center;">NO</th>
+                    <th style="text-align: center;">{{$pesanan->id}}</th>
                     <th>{{$pesanan->customer->nama}}</th>
                     <th>{{$pesanan->paket->nama}}</th>
                     <th>{{$pesanan->berat}}</th>
-                    <th>{{$}}</th>
+                    <th>{{"Rp " . number_format($pesanan->total, 0, ",", ".")  }}</th>
                   </tr>
             </tbody>
             @endforeach
